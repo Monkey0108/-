@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script>
+      // let formData=new FormData();
+      // formData.append();
+
+      // let xhr = new XMLHttpRequest();
+      // xhr.open("post", "/api");
+      // xhr.send(formData);
+
+    </script>
+  </head>
+
+  <body>
+    <form action="/api" method="POST" enctype="multipart/form-data">
+      姓名: <input type="text" name="name"></br>
+      年龄: <input type="text" name="age"></br>
+      文件: <input type="file" name="files"></br>
+      <input type="submit" value="提交">
+    </form>
+  </body>
+</html>

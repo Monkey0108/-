@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 500px;
+        height: 300px;
+        line-height: 300px;
+        text-align: center;
+        background: #eee;
+        border: 1px solid #000;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin: -250px 0 0 -150px;
+        display: none;
+      }
+    </style>
+    <script>
+      window.onload = function() {
+        let box = document.querySelector(".box");
+        let progress=document.getElementById("progress");
+        let timer = null;
+        document.addEventListener("dragover", function(ev) {
+          ev.preventDefault();
+          clearTimeout(timer);
+          box.style.display = "block";
+          timer = setTimeout(() => {
+            box.style.display = "none";
+          }, 300);
+        },false);
+
+        box.addEventListener("dragenter", function() {
+          box.innerHTML = "松手上传";
+        }, false);
+
+        box.addEventListener("dragleaver", function() {
+          box.innerHTML = "拖到这里上传";
+        }, false);
+
+        box.addEventListener("dragover", function () {
+        }, false);
+        box.addEventListener("drop", function(ev) {
+          ev.preventDefault();
+          let formData = new FormData();
+          Array.from(ev.dataTransfer.files).forEach(file => {
+            formData.append("files", file);
+          });
+          let xhr = new XMLHttpRequest();
+          xhr.upload.addEventListener("progress",(ev)=>{
+            progress.value=100*ev.loaded/ev.total;
+          });
+
+          xhr.open("post", "/api");
+          xhr.send(formData);
+          xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+              if (
+                (xhr.status >= 200 && xhr.status < 300) ||
+                xhr.status === 304
+              ) {
+                //alert(xhr.responseText);
+              }
+            }
+          };
+        }, false);
+      };
+    </script>
+  </head>
+  <body>
+    <progress value="0" max="100" id="progress"></progress>
+    <div class="box">拖到这里上传</div>
+  </body>
+</html>

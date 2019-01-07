@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script>
+      window.onload=function(){
+        let files=document.getElementById('files');
+        let btn=document.getElementById("btn");
+        btn.addEventListener("click",()=>{
+          console.log(files.files)
+          let formData = new FormData();
+          Array.from(files.files).forEach((file)=>{
+            formData.append("files",file)
+          })
+          let xhr = new XMLHttpRequest();
+          xhr.open("post", "/api");
+          xhr.send(formData);
+          xhr.onreadystatechange=function(){
+            if(xhr.readyState===4){
+              if(xhr.status>=200&&xhr.status<300|| xhr.status===304){
+                alert(xhr.responseText);
+              }
+            }
+          }
+        })
+      }
+    </script>
+  </head>
+
+  <body>
+      文件: <input type="file" id="files" multiple></br>
+      <button id="btn">上传</button>
+  </body>
+</html>
